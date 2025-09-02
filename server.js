@@ -5,8 +5,6 @@ const port = 3000;
 
 app.use(express.json());
 
-//ChickenController.getChickens();
-
 app.get('/api/v1/chickens', ChickenController.getChickens);
 app.get('/api/v1/chickens/:id', ChickenController.getChicken);
 app.post('/api/v1/chickens', ChickenController.createChicken);
