@@ -1,7 +1,7 @@
 import { ChickenService } from '../services/chickens.service.js';
 
 export class ChickenController {
-  static getChickens(req, res) {
+  static getChickens(req, res, next) {
     console.log('Controller : getChickens');
     const result = ChickenService.getChickens();
     res.status(200).json(result);
