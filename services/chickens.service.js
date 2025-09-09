@@ -1,39 +1,50 @@
 import { v4 as uuid } from 'uuid';
+
 import { ChickenModel } from '../models/chickens.model.js';
 
 export class ChickenService {
-  static getChickens = () => {
+  static getChickens() {
     console.log('Service : getChickens');
     return ChickenModel.getChickens();
-  };
+  }
 
-  static getChicken = (id) => {
+  static getChicken(id) {
     console.log(`Service : getChicken, id: ${id}`);
     return ChickenModel.getChicken(id);
-  };
+  }
 
-  static createChicken = (chicken) => {
-    chicken.id = uuid();
+  static createChicken(chicken) {
+    const newChicken = {
+      ...chicken,
+      id: uuid(),
+    };
+
     console.log('Service : createChicken');
-    return ChickenModel.createChicken(chicken);
-  };
+    return ChickenModel.createChicken(newChicken);
+  }
 
-  static updateChicken = (id, chicken) => {
+  static updateChicken(id, chicken) {
     // Don't let the user overwrite the ID
-    chicken.id = id;
+    const updateChicken = {
+      ...chicken,
+      id,
+    };
     console.log(`Service : updateChicken, id: ${id}`);
-    return ChickenModel.updateChicken(id, chicken);
-  };
+    return ChickenModel.updateChicken(id, updateChicken);
+  }
 
-  static replaceChicken = (id, chicken) => {
+  static replaceChicken(id, chicken) {
     // Don't let the user overwrite the ID
-    chicken.id = id;
+    const replaceChicken = {
+      ...chicken,
+      id,
+    };
     console.log(`Service : replaceChicken, id: ${id}`);
-    return ChickenModel.replaceChicken(id, chicken);
-  };
+    return ChickenModel.replaceChicken(id, replaceChicken);
+  }
 
-  static deleteChicken = (id) => {
+  static deleteChicken(id) {
     console.log(`Service : deleteChicken, id: ${id}`);
     return ChickenModel.deleteChicken(id);
-  };
-};
+  }
+}

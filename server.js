@@ -15,3 +15,13 @@ app.delete('/api/v1/chickens/:id', ChickenController.deleteChicken);
 app.listen(port, () => {
     console.log(`Chicken API is listening at http://localhost:${port}`);
 });
+
+/*
+app.use('/api/v1/widgets', widgetsRouter);
+--
+const widgetsRouter = express.Router();
+
+// GET /api/v1/widgets
+widgetsRouter.get('/', getWidgets);
+export default widgetsRouter;
+*/

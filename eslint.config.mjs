@@ -40,7 +40,8 @@ export default [
     // Custom rules/overrides go here
     rules: {
       '@stylistic/max-len': ['error', { code: 120 }],
-      'import-x/prefer-default-export': ['off']
+      'import-x/prefer-default-export': ['off'],
+      'import-x/extensions': ['off'],
     },
   },
 ];
