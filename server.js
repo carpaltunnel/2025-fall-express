@@ -1,27 +1,16 @@
 import express from 'express';
-import { ChickenController } from './controllers/chickens.controller.js';
+
+import { chickenRouter } from './routes/chickens.routes.js';
+import { feedRouter } from './routes/feed.routes.js';
+
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-app.get('/api/v1/chickens', ChickenController.getChickens);
-app.get('/api/v1/chickens/:id', ChickenController.getChicken);
-app.post('/api/v1/chickens', ChickenController.createChicken);
-app.put('/api/v1/chickens/:id', ChickenController.replaceChicken);
-app.patch('/api/v1/chickens/:id', ChickenController.updateChicken);
-app.delete('/api/v1/chickens/:id', ChickenController.deleteChicken);
+app.use('/api/v1/chickens', chickenRouter);
+app.use('/api/v1/feed', feedRouter);
 
 app.listen(port, () => {
-    console.log(`Chicken API is listening at http://localhost:${port}`);
+  console.log(`Chicken/Feed API is listening at http://localhost:${port}`);
 });
-
-/*
-app.use('/api/v1/widgets', widgetsRouter);
---
-const widgetsRouter = express.Router();
-
-// GET /api/v1/widgets
-widgetsRouter.get('/', getWidgets);
-export default widgetsRouter;
-*/

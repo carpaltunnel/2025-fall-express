@@ -22,7 +22,7 @@ export class ChickenController {
   static createChicken(req, res) {
     console.log('Controller : createChicken');
     const result = ChickenService.createChicken(req.body);
-    res.status(200).json(result);
+    res.status(201).json(result);
   }
 
   static updateChicken(req, res) {
@@ -52,9 +52,8 @@ export class ChickenController {
   }
 
   static deleteChicken(req, res) {
-    // TODO: Delete?  404???
     console.log(`Controller : deleteChicken, id: ${req.params.id}`);
-    const result = ChickenService.deleteChicken(req.params.id);
-    res.status(200).json(result);
+    ChickenService.deleteChicken(req.params.id);
+    res.sendStatus(204);
   }
 }

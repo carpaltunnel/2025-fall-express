@@ -86,9 +86,13 @@ export class ChickenModel {
 
   static deleteChicken(id) {
     console.log(`Model : deleteChicken, id: ${id}`);
-
-    // TODO : Error handling - 404 Discussion
     const idx = data.findIndex((chicken) => chicken.id === id);
+
+    // If it doesn't, consider that a success.
+    if (idx === -1) {
+      return true;
+    }
+
     data.splice(idx, 1);
     return true;
   }
