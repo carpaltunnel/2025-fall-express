@@ -1,3 +1,6 @@
+import { mongo } from '../lib/mongo.js';
+import { Constants } from '../lib/constants.js'
+
 const data = [
   {
     id: 'a',
@@ -31,43 +34,64 @@ const data = [
 
 export class ChickenModel {
   static getChickens() {
-    console.log('Model : getChickens');
-    return data;
+    console.log('ChickenModel : getChickens()');
+    return mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).find({}, {
+      projection: {
+        _id: 0,
+      },
+    });
   }
 
   static getChicken(id) {
     console.log(`Model : getChicken, id: ${id}`);
-    return data.find((chicken) => chicken.id === id);
+    return mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).findOne({ id }, {
+      projection: {
+        _id: 0,
+      },
+    });
   }
 
-  static createChicken(chicken) {
+  static async createChicken(chicken) {
     console.log('Model : createChicken');
-    data.push(chicken);
+    await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).insertOne(chicken);
+    // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+    delete chicken._id;
     return chicken;
   }
 
-  static updateChicken(id, chicken) {
+  static async updateChicken(id, chicken) {
     console.log(`Model : updateChicken, id: ${id}`);
 
-    // eslint-disable-next-line no-shadow
-    const idx = data.findIndex((chicken) => chicken.id === id);
+    const updateStatement = {
+      $set: {},
+    };
 
-    if (idx < 0) {
-      return false;
-    }
-
-    // for(const key of Object.keys(chicken)) {
     Object.keys(chicken).forEach((key) => {
       if (key === 'id') { // TODO: Constants
         return;
       }
 
-      data[idx][key] = chicken[key];
+      updateStatement.$set[key] = chicken[key];
     });
 
-    return data[idx];
+    // TODO: try/catch
+    // TODO: FindOneAndUpdate, return full chicken doc
+    const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).updateOne(
+      { id },
+      updateStatement,
+    );
+    
+
+    // TODO: RETURN FULL CHICKEN DOCUMENT (findOneAndUpdate())
+
+    if (result.matchedCount) {
+      return true;
+    }
+
+    return false;
   }
 
+  // TODO: Implement this.
   static replaceChicken(id, chicken) {
     console.log(`Model : replaceChicken, id: ${id}`);
 
@@ -84,16 +108,18 @@ export class ChickenModel {
     return chicken;
   }
 
-  static deleteChicken(id) {
+  static async deleteChicken(id) {
     console.log(`Model : deleteChicken, id: ${id}`);
-    const idx = data.findIndex((chicken) => chicken.id === id);
+    const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS)
+      .deleteOne({ id });
+    
 
-    // If it doesn't, consider that a success.
-    if (idx === -1) {
+    console.log(result);
+
+    if (result.deletedCount) {
       return true;
     }
 
-    data.splice(idx, 1);
-    return true;
+    return false;
   }
 }

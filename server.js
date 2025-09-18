@@ -19,6 +19,8 @@ app.use('/api/v1/feed', feedRouter);
 // Error handler :
 app.use(errorHandler);
 
+// TODO: Add proper logging (winston)
+
 // TODO: Parameterize this from env config
 const mongoOptions = {
   appName: 'ChickensAPI',

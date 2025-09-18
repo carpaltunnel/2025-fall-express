@@ -1,15 +1,16 @@
 import { ChickenService } from '../services/chickens.service.js';
 
 export class ChickenController {
-  static getChickens(req, res, next) {
+  static async getChickens(req, res, next) {
     console.log('Controller : getChickens');
-    const result = ChickenService.getChickens();
-    res.status(200).json(result);
+    const resultCursor = await ChickenService.getChickens();
+    //console.log(`-----> ${resultCursor.toArray()}`);
+    res.status(200).json(await resultCursor.toArray());
   }
 
-  static getChicken(req, res) {
+  static async getChicken(req, res) {
     console.log(`Controller : getChicken, id: ${req.params.id}`);
-    const result = ChickenService.getChicken(req.params.id);
+    const result = await ChickenService.getChicken(req.params.id);
 
     if (!result) {
       res.sendStatus(404);
@@ -19,15 +20,15 @@ export class ChickenController {
     res.status(200).json(result);
   }
 
-  static createChicken(req, res) {
+  static async createChicken(req, res) {
     console.log('Controller : createChicken');
-    const result = ChickenService.createChicken(req.body);
+    const result = await ChickenService.createChicken(req.body);
     res.status(201).json(result);
   }
 
-  static updateChicken(req, res) {
+  static async updateChicken(req, res) {
     console.log(`Controller : updateChicken, id: ${req.params.id}`);
-    const result = ChickenService.updateChicken(req.params.id, req.body);
+    const result = await ChickenService.updateChicken(req.params.id, req.body);
 
     // If truthy - successful
     if (result) {
@@ -38,10 +39,10 @@ export class ChickenController {
     res.sendStatus(404);
   }
 
-  static replaceChicken(req, res) {
+  static async replaceChicken(req, res) {
     console.log(`Controller : replaceChicken, id: ${req.params.id}`);
     const result = ChickenService.replaceChicken(req.params.id, req.body);
-
+//TODO: implement
     // If falsy - failed
     if (!result) {
       res.sendStatus(404);
@@ -51,9 +52,10 @@ export class ChickenController {
     res.status(200).json(result);
   }
 
-  static deleteChicken(req, res) {
+  static async deleteChicken(req, res) {
     console.log(`Controller : deleteChicken, id: ${req.params.id}`);
-    ChickenService.deleteChicken(req.params.id);
+    await ChickenService.deleteChicken(req.params.id);
+
     res.sendStatus(204);
   }
 }
