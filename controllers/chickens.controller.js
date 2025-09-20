@@ -41,8 +41,8 @@ export class ChickenController {
 
   static async replaceChicken(req, res) {
     console.log(`Controller : replaceChicken, id: ${req.params.id}`);
-    const result = ChickenService.replaceChicken(req.params.id, req.body);
-//TODO: implement
+    const result = await ChickenService.replaceChicken(req.params.id, req.body);
+
     // If falsy - failed
     if (!result) {
       res.sendStatus(404);

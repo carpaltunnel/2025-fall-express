@@ -1,36 +1,5 @@
+import { Constants } from '../lib/constants.js';
 import { mongo } from '../lib/mongo.js';
-import { Constants } from '../lib/constants.js'
-
-const data = [
-  {
-    id: 'a',
-    name: 'Chipotle',
-    age: 3,
-    breed: 'Buff Orpington',
-    color: 'orange',
-  },
-  {
-    id: 'b',
-    name: 'Mack',
-    age: 3,
-    breed: 'White Leghorn',
-    color: 'white',
-  },
-  {
-    id: 'c',
-    name: 'Hornet',
-    age: 3,
-    breed: 'Speckled Sussex',
-    color: 'brown and white speckled',
-  },
-  {
-    id: 'd',
-    name: 'Strudel',
-    age: 3,
-    breed: 'Black Star',
-    color: 'black',
-  },
-];
 
 export class ChickenModel {
   static getChickens() {
@@ -67,7 +36,7 @@ export class ChickenModel {
     };
 
     Object.keys(chicken).forEach((key) => {
-      if (key === 'id') { // TODO: Constants
+      if (key === Constants.ID) {
         return;
       }
 
@@ -75,35 +44,27 @@ export class ChickenModel {
     });
 
     // TODO: try/catch
-    // TODO: FindOneAndUpdate, return full chicken doc
-    const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).updateOne(
+    const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).findOneAndUpdate(
       { id },
       updateStatement,
+      { returnDocument: 'after' },
     );
-    
 
-    // TODO: RETURN FULL CHICKEN DOCUMENT (findOneAndUpdate())
-
-    if (result.matchedCount) {
-      return true;
-    }
-
-    return false;
+    // eslint-disable-next-line no-underscore-dangle
+    delete result._id;
+    // TODO: use object destructuring.
+    return result;
   }
 
-  // TODO: Implement this.
-  static replaceChicken(id, chicken) {
+  static async replaceChicken(id, chicken) {
     console.log(`Model : replaceChicken, id: ${id}`);
 
-    // eslint-disable-next-line no-shadow
-    const idx = data.findIndex((chicken) => chicken.id === id);
+    const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS)
+      .replaceOne({ id }, chicken);
 
-    if (idx < 0) {
+    if (!result.modifiedCount) {
       return false;
     }
-
-    data.splice(idx, 1);
-    data.push(chicken);
 
     return chicken;
   }
@@ -112,14 +73,11 @@ export class ChickenModel {
     console.log(`Model : deleteChicken, id: ${id}`);
     const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS)
       .deleteOne({ id });
-    
 
-    console.log(result);
-
-    if (result.deletedCount) {
-      return true;
+    if (!result.deletedCount) {
+      return false;
     }
 
-    return false;
+    return true;
   }
 }

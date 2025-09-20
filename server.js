@@ -30,9 +30,6 @@ const mongoOptions = {
 
 await mongo.init(Constants.MONGO_URI, Constants.DATABASE, mongoOptions);
 
-//const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).findOne();
-//console.log(result);
-
 app.listen(port, () => {
   console.log(`${new Date().toISOString()} : Chicken/Feed API is listening at http://localhost:${port}`);
 });
