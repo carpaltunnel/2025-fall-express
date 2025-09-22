@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "module",
   "dependencies": {
+    "config": "^4.1.1",
     "express": "^5.1.0",
     "mongodb": "^6.19.0",
     "uuid": "^11.1.0"
