@@ -1,9 +1,10 @@
 import { Constants } from '../lib/constants.js';
+import { logger } from '../lib/logger.js';
 import { mongo } from '../lib/mongo.js';
 
 export class ChickenModel {
   static getChickens() {
-    console.log('ChickenModel : getChickens()');
+    logger.debug('ChickenModel : getChickens()');
     return mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).find({}, {
       projection: {
         _id: 0,
@@ -12,7 +13,7 @@ export class ChickenModel {
   }
 
   static getChicken(id) {
-    console.log(`Model : getChicken, id: ${id}`);
+    logger.debug(`Model : getChicken, id: ${id}`);
     return mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).findOne({ id }, {
       projection: {
         _id: 0,
@@ -21,7 +22,7 @@ export class ChickenModel {
   }
 
   static async createChicken(chicken) {
-    console.log('Model : createChicken');
+    logger.debug('Model : createChicken');
     await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).insertOne(chicken);
     // eslint-disable-next-line no-underscore-dangle, no-param-reassign
     delete chicken._id;
@@ -29,7 +30,7 @@ export class ChickenModel {
   }
 
   static async updateChicken(id, chicken) {
-    console.log(`Model : updateChicken, id: ${id}`);
+    logger.debug(`Model : updateChicken, id: ${id}`);
 
     const updateStatement = {
       $set: {},
@@ -57,7 +58,7 @@ export class ChickenModel {
   }
 
   static async replaceChicken(id, chicken) {
-    console.log(`Model : replaceChicken, id: ${id}`);
+    logger.debug(`Model : replaceChicken, id: ${id}`);
 
     const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS)
       .replaceOne({ id }, chicken);
@@ -70,7 +71,7 @@ export class ChickenModel {
   }
 
   static async deleteChicken(id) {
-    console.log(`Model : deleteChicken, id: ${id}`);
+    logger.debug(`Model : deleteChicken, id: ${id}`);
     const result = await mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS)
       .deleteOne({ id });
 

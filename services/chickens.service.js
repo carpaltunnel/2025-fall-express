@@ -1,15 +1,16 @@
 import { v4 as uuid } from 'uuid';
 
+import { logger } from '../lib/logger.js';
 import { ChickenModel } from '../models/chickens.model.js';
 
 export class ChickenService {
   static getChickens() {
-    console.log('Service : getChickens');
+    logger.debug('Service : getChickens');
     return ChickenModel.getChickens();
   }
 
   static getChicken(id) {
-    console.log(`Service : getChicken, id: ${id}`);
+    logger.debug(`Service : getChicken, id: ${id}`);
     return ChickenModel.getChicken(id);
   }
 
@@ -19,7 +20,7 @@ export class ChickenService {
       id: uuid(),
     };
 
-    console.log('Service : createChicken');
+    logger.debug('Service : createChicken');
     return ChickenModel.createChicken(newChicken);
   }
 
@@ -29,7 +30,7 @@ export class ChickenService {
       ...chicken,
       id,
     };
-    console.log(`Service : updateChicken, id: ${id}`);
+    logger.debug(`Service : updateChicken, id: ${id}`);
     return ChickenModel.updateChicken(id, updateChicken);
   }
 
@@ -39,12 +40,12 @@ export class ChickenService {
       ...chicken,
       id,
     };
-    console.log(`Service : replaceChicken, id: ${id}`);
+    logger.debug(`Service : replaceChicken, id: ${id}`);
     return ChickenModel.replaceChicken(id, replaceChicken);
   }
 
   static deleteChicken(id) {
-    console.log(`Service : deleteChicken, id: ${id}`);
+    logger.debug(`Service : deleteChicken, id: ${id}`);
     return ChickenModel.deleteChicken(id);
   }
 }

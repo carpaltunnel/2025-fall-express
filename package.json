@@ -8,7 +8,9 @@
     "config": "^4.1.1",
     "express": "^5.1.0",
     "mongodb": "^6.19.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

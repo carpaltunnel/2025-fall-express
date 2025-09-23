@@ -1,7 +1,7 @@
 import express from 'express';
 import config from 'config';
 
-import { Constants } from './lib/constants.js';
+import { logger } from './lib/logger.js';
 import { mongo } from './lib/mongo.js';
 import { ageClassifier } from './middleware/age-classifier.middleware.js';
 import { errorHandler } from './middleware/error.middleware.js';
@@ -21,9 +21,6 @@ app.use('/api/v1/feed', feedRouter);
 // Error handler :
 app.use(errorHandler);
 
-// TODO: Add proper logging (winston)
-
-// TODO: Parameterize this from env config
 const mongoOptions = {
   appName: mongoConfig.applicationName,
   minPoolSize: mongoConfig.minPoolSize,
@@ -33,5 +30,5 @@ const mongoOptions = {
 await mongo.init(mongoConfig.url, mongoConfig.database, mongoOptions);
 
 app.listen(port, () => {
-  console.log(`${new Date().toISOString()} : Chicken/Feed API is listening at http://localhost:${port}`);
+  logger.info(`${new Date().toISOString()} : Chicken/Feed API is listening at http://localhost:${port}`);
 });
