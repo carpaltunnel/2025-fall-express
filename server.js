@@ -2,7 +2,7 @@ import express from 'express';
 import config from 'config';
 
 import { logger } from './lib/logger.js';
-import { mongo } from './lib/mongo.js';
+import { mongo, buildConnectionString } from './lib/mongo.js';
 import { ageClassifier } from './middleware/age-classifier.middleware.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import { chickenRouter } from './routes/chickens.routes.js';
@@ -27,7 +27,8 @@ const mongoOptions = {
   maxPoolSize: mongoConfig.maxPoolSize,
 };
 
-await mongo.init(mongoConfig.url, mongoConfig.database, mongoOptions);
+const mongoConnectString = buildConnectionString(mongoConfig);
+await mongo.init(mongoConnectString, mongoConfig.database, mongoOptions);
 
 app.listen(port, () => {
   logger.info(`${new Date().toISOString()} : Chicken/Feed API is listening at http://localhost:${port}`);

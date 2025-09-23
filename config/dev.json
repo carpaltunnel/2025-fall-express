@@ -1,6 +1,8 @@
 {
   "mongodb": {
-    "url": "mongodb://127.0.0.1:27017",
-    "database": "dev"
+    "protocol": "mongodb+srv://",
+    "url": "mycluster",
+    "username": "user",
+    "password": "pw"
   }
 }

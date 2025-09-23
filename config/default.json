@@ -2,7 +2,9 @@
   "applicationName": "chickens-api",
   "logLevel": "debug",
   "mongodb": {
-    "url": "mongodb://127.0.0.1:27017",
+    "protocol": "mongodb://",
+    "url": "127.0.0.1",
+    "port": 27017,
     "database": "arca",
     "minPoolSize": 2,
     "maxPoolSize": 10,
