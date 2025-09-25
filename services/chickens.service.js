@@ -1,7 +1,21 @@
+import AJV from 'ajv';
+import addFormats from 'ajv-formats';
 import { v4 as uuid } from 'uuid';
 
 import { logger } from '../lib/logger.js';
 import { ChickenModel } from '../models/chickens.model.js';
+import chickenSchema from '../schemas/chicken.json' with { type: 'json' };
+
+const ajv = new AJV();
+addFormats(ajv);
+const validate = ajv.compile(chickenSchema);
+
+/*
+if (!valid) {
+    console.error('Error validating input data against the JSON Schema');
+    console.error(validate.errors);
+} 
+*/
 
 export class ChickenService {
   static getChickens() {
@@ -19,6 +33,12 @@ export class ChickenService {
       ...chicken,
       id: uuid(),
     };
+
+    const valid = validate(newChicken);
+    if (!valid) {
+      logger.warn('Validation error on creating a new chicken!', validate.errors);
+      throw validate.errors;
+    }
 
     logger.debug('Service : createChicken');
     return ChickenModel.createChicken(newChicken);
