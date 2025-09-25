@@ -32,6 +32,9 @@ export class ChickenService {
     const newChicken = {
       ...chicken,
       id: uuid(),
+      tracking: {
+        createdDate: new Date(),
+      }
     };
 
     const valid = validate(newChicken);
@@ -49,7 +52,17 @@ export class ChickenService {
     const updateChicken = {
       ...chicken,
       id,
+      tracking: {
+        updatedDate: new Date(),
+      }
     };
+
+    const valid = validate(updateChicken);
+    if (!valid) {
+      logger.warn('Validation error on creating a new chicken!', validate.errors);
+      throw validate.errors;
+    }
+
     logger.debug(`Service : updateChicken, id: ${id}`);
     return ChickenModel.updateChicken(id, updateChicken);
   }
@@ -59,7 +72,17 @@ export class ChickenService {
     const replaceChicken = {
       ...chicken,
       id,
+      tracking: {
+        updatedDate: new Date(),
+      }
     };
+
+    const valid = validate(replaceChicken);
+    if (!valid) {
+      logger.warn('Validation error on creating a new chicken!', validate.errors);
+      throw validate.errors;
+    }
+
     logger.debug(`Service : replaceChicken, id: ${id}`);
     return ChickenModel.replaceChicken(id, replaceChicken);
   }

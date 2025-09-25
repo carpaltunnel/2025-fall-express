@@ -5,7 +5,8 @@
   "description": "A chicken document",
   "type": "object",
   "required": [
-    "id"
+    "id",
+    "tracking"
   ],
   "properties": {
     "id": {
@@ -26,13 +27,13 @@
     },
     "tracking": {
       "type": "object",
-      "required": ["createDate"],
       "properties": {
-        "createdByUser": {
-          "type": "string"
-        },
         "createdDate": {
-          "type": "string",
+          "type": "object",
+          "format": "date-time"
+        },
+        "updatedDate": {
+          "type": "object",
           "format": "date-time"
         }
       }
