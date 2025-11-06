@@ -3,9 +3,18 @@ import { logger } from '../lib/logger.js';
 import { mongo } from '../lib/mongo.js';
 
 export class ChickenModel {
-  static getChickens() {
-    logger.debug('ChickenModel : getChickens()');
-    return mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).find({}, {
+  static getChickens(searchTerm) {
+    logger.debug(`ChickenModel : getChickens(${searchTerm})`);
+
+    const regexMatch = new RegExp(searchTerm, 'i');
+    const regexSearch = {
+      $or: [
+        { name: regexMatch },
+        { breed: regexMatch },
+      ],
+    };
+
+    return mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).find(searchTerm ? regexSearch : {}, {
       projection: {
         _id: 0,
       },

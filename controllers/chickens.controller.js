@@ -4,7 +4,9 @@ import { ChickenService } from '../services/chickens.service.js';
 export class ChickenController {
   static async getChickens(req, res, next) {
     logger.debug('Controller : getChickens');
-    const resultCursor = await ChickenService.getChickens();
+
+    const searchTerm = req.query.search;
+    const resultCursor = await ChickenService.getChickens(searchTerm);
     res.status(200).json(await resultCursor.toArray());
   }
 
