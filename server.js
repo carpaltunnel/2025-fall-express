@@ -13,7 +13,7 @@ const port = 3000;
 const mongoConfig = config.get('mongodb');
 
 app.use(express.json());
-app.use('/api/v1/chickens', ageClassifier);
+//app.use('/api/v1/chickens', ageClassifier);
 
 app.use('/api/v1/chickens', chickenRouter);
 app.use('/api/v1/feed', feedRouter);
