@@ -26,6 +26,9 @@
     "color": {
       "type": "string"
     },
+    "imagePath": {
+      "type": "string"
+    },
     "tracking": {
       "type": "object",
       "properties": {
