@@ -1,3 +1,4 @@
+import { Constants } from '../lib/constants.js';
 import { logger } from '../lib/logger.js';
 import { ChickenService } from '../services/chickens.service.js';
 
@@ -6,7 +7,10 @@ export class ChickenController {
     logger.debug('Controller : getChickens');
 
     const searchTerm = req.query.search;
-    const resultCursor = await ChickenService.getChickens(searchTerm);
+    const skip = Number(req.query.skip) || 0;
+    const limit = Number(req.query.limit) || Constants.DEFAULT_LIMIT;
+
+    const resultCursor = await ChickenService.getChickens(searchTerm, skip, limit);
     res.status(200).json(await resultCursor.toArray());
   }
 

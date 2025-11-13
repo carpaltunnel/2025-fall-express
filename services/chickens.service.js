@@ -18,9 +18,9 @@ if (!valid) {
 */
 
 export class ChickenService {
-  static getChickens(searchTerm) {
+  static getChickens(searchTerm, skip, limit) {
     logger.debug('Service : getChickens');
-    return ChickenModel.getChickens(searchTerm);
+    return ChickenModel.getChickens(searchTerm, skip, limit);
   }
 
   static getChicken(id) {

@@ -3,8 +3,10 @@ import { logger } from '../lib/logger.js';
 import { mongo } from '../lib/mongo.js';
 
 export class ChickenModel {
-  static getChickens(searchTerm) {
+  static getChickens(searchTerm, skip, limit) {
     logger.debug(`ChickenModel : getChickens(${searchTerm})`);
+
+    // TODO: Consider searchTerm + skip/limit
 
     const regexMatch = new RegExp(searchTerm, 'i');
     const regexSearch = {
@@ -14,11 +16,14 @@ export class ChickenModel {
       ],
     };
 
+    // TODO: Do this with aggregate pipeline operators for skip/limit;
+
     return mongo.getDb().collection(Constants.CHICKENS_COLLECTIONS).find(searchTerm ? regexSearch : {}, {
       projection: {
         _id: 0,
       },
-    });
+    }).skip(skip) // This is super inefficient, but it works.
+      .limit(limit); // This is super inefficient, but it works.
   }
 
   static getChicken(id) {
